@@ -9,7 +9,6 @@ async function bootstrap() {
 
   app.setGlobalPrefix('api');
   app.enableCors();
-  // Verifica si las variables están llegando a NestJS
   logger.log(`DB_PASSWORD cargada: ${process.env.DB_PASSWORD ? 'SÍ' : 'NO'}`);
   logger.log(`DB_USERNAME: ${process.env.DB_USERNAME}`);
 
@@ -30,6 +29,6 @@ async function bootstrap() {
 
   await app.listen(process.env.PORT ?? 3000);
   logger.log(`App running on port ${ process.env.PORT }`);
-
 }
+
 bootstrap();
