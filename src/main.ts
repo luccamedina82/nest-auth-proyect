@@ -8,16 +8,37 @@ async function bootstrap() {
   const logger = new Logger('Bootstrap');
 
   app.setGlobalPrefix('api');
-  app.enableCors();
+
+  //app.enableCors();
+  app.enableCors(
+    {
+      origin: true, 
+      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+      credentials: true,
+    }
+  );
+
   logger.log(`DB_PASSWORD cargada: ${process.env.DB_PASSWORD ? 'SÍ' : 'NO'}`);
   logger.log(`DB_USERNAME: ${process.env.DB_USERNAME}`);
+
+  // app.useGlobalPipes(
+  //   new ValidationPipe({
+  //     whitelist: true,
+  //     forbidNonWhitelisted: true,
+  //   })
+  // );
 
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
       forbidNonWhitelisted: true,
+      transform: true, 
+      transformOptions: {
+        enableImplicitConversion: true, 
+      }
     })
   );
+
 
   const config = new DocumentBuilder()
     .setTitle('Auth API')
