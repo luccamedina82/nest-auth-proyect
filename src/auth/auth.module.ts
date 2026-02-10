@@ -7,11 +7,12 @@ import { JwtStrategy } from "./strategies/jwt.strategy";
 import { PassportModule } from "@nestjs/passport";
 import { JwtModule } from "@nestjs/jwt";
 import { ConfigModule, ConfigService } from "@nestjs/config";
+import { CookieInterceptor } from "./interceptors/cookie.interceptor";
 
 
 @Module({
     controllers: [AuthController],
-    providers: [AuthService, JwtStrategy],
+    providers: [AuthService, JwtStrategy, CookieInterceptor],
     imports: [
         ConfigModule,
         TypeOrmModule.forFeature([User]),
@@ -23,7 +24,7 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
                 return {
                     secret: configService.get<string>('JWT_SECRET'),
                     signOptions: {
-                        expiresIn: '2h',
+                        expiresIn: '15m',
                     },
                 }
             },

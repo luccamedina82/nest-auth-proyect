@@ -19,9 +19,18 @@ export class User {
     @Column('text')
     fullName: string;
 
+    @Column({ type: 'text', nullable: true })
+    refreshToken: string | null;
+
+    @Column({ type: 'timestamp', nullable: true })
+    refreshTokenExpiry: Date | null;
+    
     @Column('text', {
         array: true,
         default: ['user']
     })
+
+
+
     roles: string[];
 }

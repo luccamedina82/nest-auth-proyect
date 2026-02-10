@@ -2,17 +2,18 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const logger = new Logger('Bootstrap');
 
   app.setGlobalPrefix('api');
+  app.use(cookieParser());
 
-  //app.enableCors();
   app.enableCors(
     {
-      origin: true, 
+      origin: process.env.CLIENT_URL || 'http://localhost:3001', 
       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
       credentials: true,
     }
@@ -20,13 +21,6 @@ async function bootstrap() {
 
   logger.log(`DB_PASSWORD cargada: ${process.env.DB_PASSWORD ? 'SÍ' : 'NO'}`);
   logger.log(`DB_USERNAME: ${process.env.DB_USERNAME}`);
-
-  // app.useGlobalPipes(
-  //   new ValidationPipe({
-  //     whitelist: true,
-  //     forbidNonWhitelisted: true,
-  //   })
-  // );
 
   app.useGlobalPipes(
     new ValidationPipe({
